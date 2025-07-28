@@ -73,16 +73,14 @@ class SegmentationDataset(Dataset):
         if self.transform:
           image = ToPILImage()(image.astype(np.uint8))
           image = self.transform(image)
+          
         if self.target_transform:
-          #mask = ToPILImage()(mask.astype(np.uint8))
           mask = self.target_transform(mask)
 
         if cls_int in self.minority_class_indices:
             image, mask = self.strong_aug(image, mask)
         else:
             image, mask = self.light_aug(image, mask)
-
-        #mask = mask - 1
 
         return image, mask, cls_int
 
